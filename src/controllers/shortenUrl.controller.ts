@@ -3,6 +3,7 @@ import ShortenUrlService from '../services/shortenUrl.service';
 import { Request, Response, NextFunction } from 'express';
 import { UrlDto } from '../dtos/urlDto.dto';
 import { BadRequestError } from '../httpErrors/BadRequestError.httpError';
+import { GetStatsDto } from '../dtos/getStats.dto';
 
 class ShortenUrlController {
     private shortenUrlService: ShortenUrlService;
@@ -61,13 +62,11 @@ class ShortenUrlController {
             if (!fromQueryParams.includes(from))
                 throw new BadRequestError('Invalid query parameter');
 
-            const stats = await this.shortenUrlService.stats(
-                key,
-                from,
-                skip,
-                take
+            const UrlStatsDto = await this.shortenUrlService.stats(
+                new GetStatsDto(key, from, skip, take)
             );
-            res.status(200).json(stats);
+
+            res.status(200).json(UrlStatsDto);
         } catch (error) {
             next(error);
         }
