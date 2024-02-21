@@ -19,6 +19,16 @@ class ShortenUrlController {
             next(error);
         }
     };
+
+    redirect = async (req: Request, res: Response, next: NextFunction) => {
+        const urlId: string = req.params.urlId;
+        try {
+            const url = await this.shortenUrlService.redirect(urlId);
+            res.redirect(url.url);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 const shortenUrlController = new ShortenUrlController(shortenUrlService);
