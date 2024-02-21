@@ -6,5 +6,6 @@ import { urlSchema } from '../schemas/url.schema';
 const router: Router = express.Router();
 
 router.post('/create', validateReqBody(urlSchema), shortenUrlController.create);
+router.get('/redirect/:urlId', shortenUrlController.redirect);
 
 export { router as shortenUrlRouter };
