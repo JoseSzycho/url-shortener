@@ -5,7 +5,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { InternalServerError } from '../httpErrors/InternalServerError.httpError';
 import 'dotenv/config';
 
-class ShortenUrl {
+class ShortenUrlService {
     async create(url: Iurl): Promise<Iurl> {
         // initial id length
         let length = 4;
@@ -59,6 +59,6 @@ class ShortenUrl {
     }
 }
 
-const shortenUrl = new ShortenUrl();
-export default ShortenUrl;
-export { shortenUrl };
+const shortenUrlService = new ShortenUrlService();
+export default ShortenUrlService;
+export { shortenUrlService };
