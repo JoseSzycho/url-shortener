@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Link {
-  id String @id @default(uuid())
+  id String @id
 
   url String
 
