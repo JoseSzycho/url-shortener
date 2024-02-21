@@ -4,6 +4,9 @@ import { Iurl } from '../interfaces/url.interface';
 import { prisma } from '../db/prismaClient.db';
 import randomstring from 'randomstring';
 import 'dotenv/config';
+import { NotFoundError } from '../httpErrors/NotFoundError.httpError';
+import { CreatedUrlDto } from '../dtos/createdUrl.dto';
+import { UrlDto } from '../dtos/urlDto.dto';
 
 class ShortenUrlService {
     /**
@@ -11,7 +14,7 @@ class ShortenUrlService {
      * @param url The url object
      * @returns The shorter url
      */
-    async create(url: Iurl): Promise<Iurl> {
+    async create(url: Iurl): Promise<CreatedUrlDto> {
         // initial id length
         let length = 4;
         // security max length, for avoiding infinite loop
@@ -19,6 +22,7 @@ class ShortenUrlService {
 
         let isUrlIdCreated = false;
         let urlId: string;
+        let data;
 
         // creates an valid urlId, it loops increasing url length
         // every time there is a urlId collision, in order to not
@@ -36,7 +40,7 @@ class ShortenUrlService {
 
             try {
                 // try to add url to db
-                await prisma.link.create({
+                data = await prisma.link.create({
                     data: {
                         urlId: urlId,
                         url: url.url,
@@ -58,7 +62,30 @@ class ShortenUrlService {
             }
         } while (!isUrlIdCreated);
 
-        return { url: `${process.env.APP_HOST}/${urlId}` };
+        return new CreatedUrlDto(
+            `${process.env.APP_HOST}/api/v1/shortenurl/redirect/${urlId}`,
+            `${data?.urlId}`,
+            `${data?.id}`
+        );
+    }
+
+    async redirect(urlId: string): Promise<UrlDto> {
+        const urlData = await prisma.link.findUnique({
+            where: {
+                urlId: urlId,
+            },
+        });
+
+        if (!urlData) throw new NotFoundError('Url not found');
+
+        await prisma.linkView.create({
+            data: {
+                isMovile: true,
+                linkId: urlData.id,
+            },
+        });
+
+        return new UrlDto({ url: urlData.url });
     }
 }
 
