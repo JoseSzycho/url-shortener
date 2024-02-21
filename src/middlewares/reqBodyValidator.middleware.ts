@@ -13,7 +13,9 @@ export const validateReqBody = (schema: JSONSchemaType<unknown>) => {
             next();
             return;
         } else {
-            const error = new BadRequestError('The request object is incorrect');
+            const error = new BadRequestError(
+                'The request object is incorrect'
+            );
             next(error);
         }
     };
