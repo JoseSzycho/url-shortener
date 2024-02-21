@@ -1,0 +1,20 @@
+version: '4.23.0'
+services:
+  postgres-db:
+    image: postgres:16
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    networks:
+      - appnet
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+  
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  postgres-db-volume:
