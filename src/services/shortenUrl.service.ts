@@ -97,7 +97,7 @@ class ShortenUrlService {
             },
         });
 
-        return new UrlDto({ url: urlData.url });
+        return new UrlDto({ ...urlData });
     }
 
     async stats(
