@@ -14,6 +14,8 @@ export const errorHandler = (
             stack: process.env.NODE_ENV === 'dev' ? error.stack : {},
             reqBody: req.body,
             reqHeaders: req.headers,
+            reqParams: req.params,
+            reqQueryParams: req.query,
         },
     });
 };
