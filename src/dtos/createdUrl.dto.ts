@@ -1,10 +1,14 @@
+import { ICreatedUrl } from '../interfaces/createdUrl.interface';
+
 export class CreatedUrlDto {
-    url: string;
+    id: string;
     urlId: string;
-    statisticsSecretKey: string;
-    constructor(url: string, urlId: string, statisticsSecretKey: string) {
-        this.url = url;
-        this.urlId = urlId;
-        this.statisticsSecretKey = statisticsSecretKey;
+    url: string;
+    redirectionUrl: string;
+    constructor(createdUrl: ICreatedUrl) {
+        this.id = createdUrl.id;
+        this.urlId = createdUrl.urlId;
+        this.url = createdUrl.url;
+        this.redirectionUrl = createdUrl.redirectionUrl;
     }
 }
