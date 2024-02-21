@@ -6,6 +6,8 @@ import 'dotenv/config';
 import { NotFoundError } from '../httpErrors/NotFoundError.httpError';
 import { CreatedUrlDto } from '../dtos/createdUrl.dto';
 import { UrlDto } from '../dtos/urlDto.dto';
+import { GetStatsDto } from '../dtos/getStats.dto';
+import { UrlStatsDto } from '../dtos/urlStats.dto';
 
 class ShortenUrlService {
     /**
@@ -100,16 +102,11 @@ class ShortenUrlService {
         return new UrlDto({ ...urlData });
     }
 
-    async stats(
-        key: string,
-        from: string,
-        skip: number | undefined,
-        take: number | undefined
-    ) {
+    async stats(getStatsDto: GetStatsDto): Promise<UrlStatsDto[]> {
         const today = new Date().getTime();
         let pastTime = new Date('2023-02-10');
 
-        switch (from) {
+        switch (getStatsDto.from) {
             case undefined:
                 break;
             case 'lastDay':
@@ -124,15 +121,16 @@ class ShortenUrlService {
         }
 
         const data = await prisma.linkView.findMany({
-            skip: skip,
-            take: take,
+            skip: getStatsDto.skip,
+            take: getStatsDto.take,
             where: {
                 viewDate: { gte: pastTime },
-                linkId: key,
+                linkId: getStatsDto.key,
             },
         });
 
-        return data;
+        const urlStatsDto = data.map((stat) => new UrlStatsDto({ ...stat }));
+        return urlStatsDto;
     }
 }
 
