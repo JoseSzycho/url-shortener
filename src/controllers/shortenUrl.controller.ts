@@ -24,8 +24,8 @@ class ShortenUrlController {
     redirect = async (req: Request, res: Response, next: NextFunction) => {
         const urlId: string = req.params.urlId;
         try {
-            const url = await this.shortenUrlService.redirect(urlId);
-            res.redirect(url.url);
+            const urlDto = await this.shortenUrlService.redirect(urlId);
+            res.redirect(urlDto.url);
         } catch (error) {
             next(error);
         }
