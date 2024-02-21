@@ -1,11 +1,16 @@
-import { cryptoRandomStringAsync } from 'crypto-random-string';
+import { InternalServerError } from '../httpErrors/InternalServerError.httpError';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Iurl } from '../interfaces/url.interface';
 import { prisma } from '../db/prismaClient.db';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { InternalServerError } from '../httpErrors/InternalServerError.httpError';
+import randomstring from 'randomstring';
 import 'dotenv/config';
 
 class ShortenUrlService {
+    /**
+     * Creates a shorter version of a given url
+     * @param url The url object
+     * @returns The shorter url
+     */
     async create(url: Iurl): Promise<Iurl> {
         // initial id length
         let length = 4;
@@ -19,10 +24,14 @@ class ShortenUrlService {
         // every time there is a urlId collision, in order to not
         // take many iterations if there is already many urlId created
         do {
+            // security check for avoid infinite loop
+            if (length >= MAX_LENGTH)
+                throw new InternalServerError('Server can not create URL id');
+
             // creating random urlId
-            urlId = await cryptoRandomStringAsync({
+            urlId = randomstring.generate({
                 length: length,
-                type: 'alphanumeric',
+                charset: 'alphanumeric',
             });
 
             try {
@@ -33,12 +42,6 @@ class ShortenUrlService {
                         url: url.url,
                     },
                 });
-
-                // security check for avoid infinite loop
-                if (length >= MAX_LENGTH)
-                    throw new InternalServerError(
-                        'Server can not create URL id'
-                    );
 
                 // url is created, exit condition
                 isUrlIdCreated = true;
