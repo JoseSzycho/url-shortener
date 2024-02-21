@@ -38,7 +38,7 @@ class ShortenUrlService {
                 // try to add url to db
                 await prisma.link.create({
                     data: {
-                        id: urlId,
+                        urlId: urlId,
                         url: url.url,
                     },
                 });

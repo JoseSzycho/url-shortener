@@ -14,15 +14,16 @@ datasource db {
 }
 
 model Link {
-  id String @id
+  id String @id @default(uuid())
 
+  urlId String
   url String
 
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   stats     LinkView[]
 
-  @@index([id])
+  @@index([id, urlId])
 }
 
 model LinkView {
