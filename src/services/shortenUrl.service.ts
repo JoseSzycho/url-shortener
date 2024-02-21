@@ -95,6 +95,41 @@ class ShortenUrlService {
 
         return new UrlDto({ url: urlData.url });
     }
+
+    async stats(
+        key: string,
+        from: string,
+        skip: number | undefined,
+        take: number | undefined
+    ) {
+        const today = new Date().getTime();
+        let pastTime = new Date('2023-02-10');
+
+        switch (from) {
+            case undefined:
+                break;
+            case 'lastDay':
+                pastTime = new Date(today - 1 * (24 * 60 * 60 * 1000));
+                break;
+            case 'lastWeek':
+                pastTime = new Date(today - 7 * (24 * 60 * 60 * 1000));
+                break;
+            case 'lastMonth':
+                pastTime = new Date(today - 31 * (24 * 60 * 60 * 1000));
+                break;
+        }
+
+        const data = await prisma.linkView.findMany({
+            skip: skip,
+            take: take,
+            where: {
+                viewDate: { gte: pastTime },
+                linkId: key,
+            },
+        });
+
+        return data;
+    }
 }
 
 const shortenUrlService = new ShortenUrlService();
