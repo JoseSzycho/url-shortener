@@ -16,7 +16,7 @@ datasource db {
 model Link {
   id String @id @default(uuid())
 
-  urlId String
+  urlId String @unique
   url String
 
   createdAt DateTime    @default(now())
