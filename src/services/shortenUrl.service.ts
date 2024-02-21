@@ -11,9 +11,9 @@ class ShortenUrlService {
     /**
      * Creates a shorter version of a given url
      * @param url The url object
-     * @returns The shorter url
+     * @returns The shorter url in a dto object
      */
-    async create(url: UrlDto): Promise<CreatedUrlDto> {
+    async create(urlDto: UrlDto): Promise<CreatedUrlDto> {
         // initial id length
         let length = 4;
         // security max length, for avoiding infinite loop
@@ -42,7 +42,7 @@ class ShortenUrlService {
                 data = await prisma.link.create({
                     data: {
                         urlId: urlId,
-                        url: url.url,
+                        url: urlDto.url,
                     },
                 });
 
@@ -61,11 +61,15 @@ class ShortenUrlService {
             }
         } while (!isUrlIdCreated);
 
-        return new CreatedUrlDto(
-            `${process.env.APP_HOST}/api/v1/shortenurl/redirect/${urlId}`,
-            `${data?.urlId}`,
-            `${data?.id}`
-        );
+        if (!data)
+            throw new InternalServerError(
+                'Can not retrieve data from created resource'
+            );
+
+        return new CreatedUrlDto({
+            ...data,
+            redirectionUrl: `${process.env.APP_HOST}/api/v1/shortenurl/redirect/${data?.urlId}`,
+        });
     }
 
     /**
