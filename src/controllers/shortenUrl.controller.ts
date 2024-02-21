@@ -2,6 +2,7 @@ import { shortenUrlService } from '../services/shortenUrl.service';
 import ShortenUrlService from '../services/shortenUrl.service';
 import { Request, Response, NextFunction } from 'express';
 import { UrlDto } from '../dtos/urlDto.dto';
+import { BadRequestError } from '../httpErrors/BadRequestError.httpError';
 
 class ShortenUrlController {
     private shortenUrlService: ShortenUrlService;
@@ -24,6 +25,49 @@ class ShortenUrlController {
         try {
             const url = await this.shortenUrlService.redirect(urlId);
             res.redirect(url.url);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    stats = async (req: Request, res: Response, next: NextFunction) => {
+        const fromQueryParams = [
+            undefined,
+            'lastDay',
+            'lastWeek',
+            'lastMonth',
+            'beginning',
+        ];
+
+        const from = req.query.from as string;
+
+        const key: string = req.params.key;
+
+        const validNumberQueryParam = (queryParam: unknown) => {
+            if (queryParam)
+                if (!isNaN(Number(queryParam))) {
+                    return Number(queryParam);
+                } else {
+                    throw new BadRequestError('Invalid query parameter');
+                }
+
+            return undefined;
+        };
+
+        try {
+            const skip = validNumberQueryParam(req.query.skip);
+            const take = validNumberQueryParam(req.query.take);
+
+            if (!fromQueryParams.includes(from))
+                throw new BadRequestError('Invalid query parameter');
+
+            const stats = await this.shortenUrlService.stats(
+                key,
+                from,
+                skip,
+                take
+            );
+            res.status(200).json(stats);
         } catch (error) {
             next(error);
         }
