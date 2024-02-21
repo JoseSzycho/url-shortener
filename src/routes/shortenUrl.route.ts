@@ -7,5 +7,6 @@ const router: Router = express.Router();
 
 router.post('/create', validateReqBody(urlSchema), shortenUrlController.create);
 router.get('/redirect/:urlId', shortenUrlController.redirect);
+router.get('/stats/:key', shortenUrlController.stats);
 
 export { router as shortenUrlRouter };
