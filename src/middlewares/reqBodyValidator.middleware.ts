@@ -1,6 +1,7 @@
 import Ajv, { JSONSchemaType } from 'ajv';
 import addFormats from 'ajv-formats';
 import { Request, Response, NextFunction } from 'express';
+import { BadRequest } from '../httpErrors/BadRequest.httpError';
 
 export const validateReqBody = (schema: JSONSchemaType<unknown>) => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -12,9 +13,7 @@ export const validateReqBody = (schema: JSONSchemaType<unknown>) => {
             next();
             return;
         } else {
-            const error = new BadRequestException(
-                'The request object is incorrect'
-            );
+            const error = new BadRequest('The request object is incorrect');
             next(error);
         }
     };
