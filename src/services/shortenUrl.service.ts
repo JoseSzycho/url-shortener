@@ -1,6 +1,5 @@
 import { InternalServerError } from '../httpErrors/InternalServerError.httpError';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { Iurl } from '../interfaces/url.interface';
 import { prisma } from '../db/prismaClient.db';
 import randomstring from 'randomstring';
 import 'dotenv/config';
@@ -14,7 +13,7 @@ class ShortenUrlService {
      * @param url The url object
      * @returns The shorter url
      */
-    async create(url: Iurl): Promise<CreatedUrlDto> {
+    async create(url: UrlDto): Promise<CreatedUrlDto> {
         // initial id length
         let length = 4;
         // security max length, for avoiding infinite loop
@@ -69,15 +68,24 @@ class ShortenUrlService {
         );
     }
 
+    /**
+     * Returns the complete stored URL from the url id
+     * stored in the db
+     * @param urlId the url id
+     * @returns the stored url in a dto
+     */
     async redirect(urlId: string): Promise<UrlDto> {
+        // getting url data
         const urlData = await prisma.link.findUnique({
             where: {
                 urlId: urlId,
             },
         });
 
+        // error if url not stored
         if (!urlData) throw new NotFoundError('Url not found');
 
+        // storing visito to the url for statistics
         await prisma.linkView.create({
             data: {
                 isMovile: true,
