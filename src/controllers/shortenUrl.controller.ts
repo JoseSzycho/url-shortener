@@ -15,7 +15,7 @@ class ShortenUrlController {
         const urlDto = new UrlDto(req.body);
         try {
             const shortenUrl = await this.shortenUrlService.create(urlDto);
-            res.status(200).json(shortenUrl);
+            res.status(201).json(shortenUrl);
         } catch (error) {
             next(error);
         }
