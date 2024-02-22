@@ -50,14 +50,14 @@ It is important to follow the steps, as db must be started in order the app bein
 
 1. `CLONE` the repository
 
-   `https://github.com/JoseSzycho/url-shortener.git`
+    `https://github.com/JoseSzycho/url-shortener.git`
 
 2. `Compose` the database
 
-   `docker compose -f docker-compose.db.yml up -d`
-   
-3. `Compose` the app 
+    `docker compose -f docker-compose.db.yml up -d`
 
-   `docker compose -f docker-compose.app.yml up -d`
+3. `Compose` the app
+
+    `docker compose -f docker-compose.app.yml up -d`
 
 4. `Have fun`
