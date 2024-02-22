@@ -29,7 +29,7 @@ The URL Shortener with Analytics project aims to develop an API that allows user
 
 ### **Technologies**
 
--   **Backend:** Node.js, Express.js, Prisma ORM
+-   **Backend:** Node.js, Express.js, Prisma ORM, Jest & supertest
 -   **Deployment:** Docker with internal network
 -   **Database:** Postgres
 -   **API Documentation:** Postman
