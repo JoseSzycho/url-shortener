@@ -6,7 +6,7 @@ import 'dotenv/config';
 import { NotFoundError } from '../httpErrors/NotFoundError.httpError';
 import { CreatedUrlDto } from '../dtos/createdUrl.dto';
 import { UrlDto } from '../dtos/urlDto.dto';
-import { GetStatsDto } from '../dtos/getStats.dto';
+import { GetStatsOptionsDto } from '../dtos/getStatsOptions.dto';
 import { UrlStatsDto } from '../dtos/urlStats.dto';
 
 class ShortenUrlService {
@@ -102,12 +102,13 @@ class ShortenUrlService {
         return new UrlDto({ ...urlData });
     }
 
-    async stats(getStatsDto: GetStatsDto): Promise<UrlStatsDto[]> {
+    async stats(getStatsOptionsDto: GetStatsOptionsDto): Promise<UrlStatsDto> {
         const today = new Date().getTime();
         let pastTime = new Date('2023-02-10');
 
-        switch (getStatsDto.from) {
+        switch (getStatsOptionsDto.from) {
             case undefined:
+                getStatsOptionsDto.from = 'beginning';
                 break;
             case 'lastDay':
                 pastTime = new Date(today - 1 * (24 * 60 * 60 * 1000));
@@ -120,17 +121,23 @@ class ShortenUrlService {
                 break;
         }
 
-        const data = await prisma.linkView.findMany({
-            skip: getStatsDto.skip,
-            take: getStatsDto.take,
+        const totalViews = await prisma.linkView.count({
             where: {
                 viewDate: { gte: pastTime },
-                linkId: getStatsDto.key,
+                linkId: getStatsOptionsDto.key,
             },
         });
 
-        const urlStatsDto = data.map((stat) => new UrlStatsDto({ ...stat }));
-        return urlStatsDto;
+        const data = await prisma.linkView.findMany({
+            skip: getStatsOptionsDto.skip,
+            take: getStatsOptionsDto.take,
+            where: {
+                viewDate: { gte: pastTime },
+                linkId: getStatsOptionsDto.key,
+            },
+        });
+
+        return new UrlStatsDto(totalViews, getStatsOptionsDto.from, data);
     }
 }
 
