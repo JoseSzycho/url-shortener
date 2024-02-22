@@ -43,3 +43,18 @@ The URL Shortener with Analytics project aims to develop an API that allows user
 ### Documentation
 
 https://documenter.getpostman.com/view/32838257/2sA2rB12vH
+
+### Installation
+
+1. `CLONE` the repository
+
+   `https://github.com/JoseSzycho/url-shortener.git`
+
+2. `Compose` database
+   `docker compose -f docker-compose.db.yml up`
+   
+3. `Compose` app
+
+   `docker compose -f docker-compose.app.yml up`
+
+4. `Have fun`
