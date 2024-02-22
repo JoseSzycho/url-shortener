@@ -46,15 +46,17 @@ https://documenter.getpostman.com/view/32838257/2sA2rB12vH
 
 ### Installation
 
+It is important to follow the steps, as db must be started in order the app being able to perform the db migrations.
+
 1. `CLONE` the repository
 
    `https://github.com/JoseSzycho/url-shortener.git`
 
 2. `Compose` database
-   `docker compose -f docker-compose.db.yml up`
+   `docker compose -f docker-compose.db.yml up -d`
    
 3. `Compose` app
 
-   `docker compose -f docker-compose.app.yml up`
+   `docker compose -f docker-compose.app.yml up -d`
 
 4. `Have fun`
