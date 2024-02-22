@@ -103,6 +103,15 @@ class ShortenUrlService {
     }
 
     async stats(getStatsOptionsDto: GetStatsOptionsDto): Promise<UrlStatsDto> {
+        const isCreated = await prisma.linkView.findFirst({
+            where: {
+                linkId: getStatsOptionsDto.key,
+            },
+        });
+
+        if (!isCreated)
+            throw new NotFoundError('No url shortened with this id');
+
         const today = new Date().getTime();
         let pastTime = new Date('2023-02-10');
 
