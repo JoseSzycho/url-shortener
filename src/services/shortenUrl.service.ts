@@ -103,9 +103,9 @@ class ShortenUrlService {
     }
 
     async stats(getStatsOptionsDto: GetStatsOptionsDto): Promise<UrlStatsDto> {
-        const isCreated = await prisma.linkView.findFirst({
+        const isCreated = await prisma.link.findFirst({
             where: {
-                linkId: getStatsOptionsDto.key,
+                id: getStatsOptionsDto.key,
             },
         });
 
