@@ -1,4 +1,4 @@
-export interface IurlStats {
+export interface IurlViews {
     id: string;
     viewDate: Date;
     isMovile: boolean;

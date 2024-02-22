@@ -1,4 +1,4 @@
-export class GetStatsDto {
+export class GetStatsOptionsDto {
     key: string;
     from: string;
     skip: number | undefined;
