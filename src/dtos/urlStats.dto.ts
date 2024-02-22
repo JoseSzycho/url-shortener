@@ -1,13 +1,11 @@
-import { IurlStats } from '../interfaces/urlStats.interface';
+import { IurlViews } from '../interfaces/urlViews.interface';
 export class UrlStatsDto {
-    id: string;
-    viewDate: Date;
-    isMovile: boolean;
-    linkId: string;
-    constructor(urlStats: IurlStats) {
-        this.id = urlStats.id;
-        this.viewDate = urlStats.viewDate;
-        this.isMovile = urlStats.isMovile;
-        this.linkId = urlStats.linkId;
+    totalViews: number;
+    from: string;
+    urlViews: IurlViews[];
+    constructor(totalViews: number, from: string, urlViews: IurlViews[]) {
+        this.totalViews = totalViews;
+        this.from = from;
+        this.urlViews = urlViews;
     }
 }
