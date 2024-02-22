@@ -52,10 +52,11 @@ It is important to follow the steps, as db must be started in order the app bein
 
    `https://github.com/JoseSzycho/url-shortener.git`
 
-2. `Compose` database
+2. `Compose` the database
+
    `docker compose -f docker-compose.db.yml up -d`
    
-3. `Compose` app
+3. `Compose` the app 
 
    `docker compose -f docker-compose.app.yml up -d`
 
