@@ -21,10 +21,7 @@ The URL Shortener with Analytics project aims to develop an API that allows user
 2. **Link Analytics:**
     - Users can view analytics for each shortened URL, including:
         - Total number of visits.
-        - Referring websites or platforms.
-        - Geographical location of visitors.
         - Time and date of visits.
-    - Analytics data is presented in a user-friendly dashboard.
 3. **User Authentication and Management:**
     - Users can sign up for an account to access the URL shortening and analytics features.
     - User authentication ensures the security and privacy of user data.
