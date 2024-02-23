@@ -1,17 +1,19 @@
 name: App CI / Tests before main merge
 
 on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
 
 jobs:
-  build:
-    name: Tests before merge main
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Deploy test server and run tests
-        run: docker compose -f docker-compose.test.yml run --rm app
+    build:
+        name: Tests before merge main
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Formatting the code
+              run: npm run format
+            - name: Deploy test server and run tests
+              run: docker compose -f docker-compose.test.yml run --rm app #git update-index --chmod=+x deployTestServer.sh for working
