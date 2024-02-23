@@ -1,0 +1,17 @@
+name: App CI / Tests before main merge
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    name: Tests before merge main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy test server and run tests
+        run: docker compose -f docker-compose.test.yml run
