@@ -1,6 +1,14 @@
 # **URL Shortener with Analytics** ✂️🔗📈
 
-### **Overview**
+### Table of content 📚
+
+1. [**Overview**](#overview-👀)
+2. [**Technologies**](#technologies-🛠️)
+3. [**Project objectives**](#project-objectives-🎯)
+4. [**Documentation**](#documentation-🔍)
+5. [**Installation**](#installation-📥)
+
+### **Overview** 👀
 
 The URL Shortener with Analytics project aims to develop an API that allows users to shorten long URLs into concise, shareable links while providing analytics on the usage of these links.
 
@@ -13,10 +21,7 @@ The URL Shortener with Analytics project aims to develop an API that allows user
 2. **Link Analytics:**
     - Users can view analytics for each shortened URL, including:
         - Total number of visits.
-        - Referring websites or platforms.
-        - Geographical location of visitors.
         - Time and date of visits.
-    - Analytics data is presented in a user-friendly dashboard.
 3. **User Authentication and Management:**
     - Users can sign up for an account to access the URL shortening and analytics features.
     - User authentication ensures the security and privacy of user data.
@@ -32,6 +37,7 @@ The URL Shortener with Analytics project aims to develop an API that allows user
 -   **Backend:** Node.js, Express.js, Prisma ORM, Jest & supertest
 -   **Deployment:** Docker with internal network
 -   **Database:** Postgres
+-   **CI**: Throw github actions and custom workflow before merge to main
 -   **API Documentation:** Postman
 
 ### **Project Objectives** 🎯
